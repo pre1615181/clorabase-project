@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>USAT-CS — Computer Science Paper 2</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+ <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+ <script id="MathJax-script" async src="mathjax_local.js"></script>
+ <script>
+ 
+ </script>
+ <style>
+ @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+ *{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f0f1a;--paper:#fff;--ink:#1a1a1a;--ink2:#444;--ink3:#888;--brd:#e2e2e2;--blue:#2563eb;--green:#16a34a;--red:#dc2626;--orange:#ea580c;--purple:#7c3aed}
+ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+
+ /* START */
+.start-screen{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;background:linear-gradient(135deg,#0a0a1a,#1a1a3e)}
+.start-card{background:var(--paper);max-width:580px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.start-hdr{background:linear-gradient(135deg,#1e293b,#0f172a);padding:40px 30px;text-align:center}
+.start-hdr.badge{display:inline-block;background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.3);color:#93c5fd;padding:5px 16px;border-radius:20px;font-size:.6rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.start-hdr h1{color:#fff;font-size:1.5rem;font-weight:900;letter-spacing:1px}
+.start-hdr p{color:#64748b;font-size:.8rem;margin-top:4px}
+.start-body{padding:30px}
+.d-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.d-item{background:#f8fafc;border:1px solid var(--brd);border-radius:10px;padding:14px}
+.d-item.lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-bottom:3px}
+.d-item.val{font-size:.95rem;font-weight:700;color:var(--ink)}
+.d-item.full{grid-column:span 2}
+.inst-box{background:#f8fafc;border:1px solid var(--brd);border-radius:10px;padding:18px;margin-bottom:24px}
+.inst-box h3{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:10px}
+.inst-box ul{list-style:none}
+.inst-box li{font-size:.82rem;color:var(--ink2);padding:4px 0 4px 16px;position:relative}
+.inst-box li::before{content:'';position:absolute;left:0;top:10px;width:5px;height:5px;background:var(--blue);border-radius:50%}
+.start-btn{display:block;width:100%;padding:16px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.3s}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,99,235,.4)}
+
+ /* EXAM */
+.exam-screen{display:none}
+.topbar{background:linear-gradient(135deg,#0f172a,#1e293b);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-logo{color:#fff;font-size:.85rem;font-weight:800;letter-spacing:2px}
+.tb-badge{background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.25);color:#93c5fd;padding:3px 10px;border-radius:4px;font-size:.6rem;font-weight:700;letter-spacing:1px}
+.timer-box{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#2563eb,#1d4ed8);padding:7px 14px;border-radius:8px;box-shadow:0 2px 10px rgba(37,99,235,.4);border:1px solid rgba(255,255,255,.2)}
+.timer-box i{color:#fff;font-size:.95rem;filter:drop-shadow(0 0 3px rgba(255,255,255,.5))}
+.timer-box .time{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:#fff;text-shadow:0 0 8px rgba(255,255,255,.4);letter-spacing:1px}
+.timer-box.warn{background:linear-gradient(135deg,#ea580c,#c2410c);box-shadow:0 2px 10px rgba(234,88,12,.5);border:1px solid rgba(255,255,255,.25)}.timer-box.warn .time{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.5)}.timer-box.warn i{color:#fff}
+.timer-box.dng{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 2px 12px rgba(220,38,38,.6);border:1px solid rgba(255,255,255,.3)}.timer-box.dng .time{color:#fff;animation:bl 1s infinite;text-shadow:0 0 10px rgba(255,255,255,.6)}.timer-box.dng i{color:#fff}
+ @keyframes bl{0%,100%{opacity:1}50%{opacity:.4}}
+
+.prog-wrap{background:#fff;padding:8px 16px;border-bottom:1px solid var(--brd);position:sticky;top:44px;z-index:999}
+.prog-track{height:3px;background:#eee;border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));width:0%;transition:.3s}
+.prog-txt{display:flex;justify-content:space-between;font-size:.6rem;color:var(--ink3);margin-top:4px}
+
+.paper-wrap{max-width:780px;margin:20px auto;padding:0 12px}
+.paper{background:var(--paper);border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.15)}
+.paper-hdr{background:linear-gradient(135deg,#0f172a,#1e293b);padding:18px 24px;text-align:center}
+.paper-hdr h1{color:#fff;font-size:.85rem;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.paper-hdr p{color:#64748b;font-size:.7rem;margin-top:3px}
+
+.section{padding:22px 26px;border-bottom:1px solid var(--brd)}
+.section:last-child{border-bottom:none}
+.sec-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:18px;padding-bottom:6px;border-bottom:2px solid var(--blue);display:inline-block}
+
+.q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed #f0f0f0}
+.q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-text{font-size:.92rem;color:var(--ink);margin-bottom:12px;line-height:1.75}
+.q-num{font-weight:700;color:var(--blue)}
+.q-text u{text-decoration:none!important;border-bottom:none!important;padding:0!important;display:inline!important;min-width:auto!important}
+.blank{display:inline-block;border-bottom:1.5px solid var(--ink3);min-width:100px;margin:0 2px;height:1.1em;vertical-align:bottom}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;padding-left:18px}
+.opt{display:flex;align-items:center;gap:8px}
+.omr{width:30px;height:30px;border:2px solid #ccc;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;flex-shrink:0;font-size:.7rem;font-weight:700;color:var(--ink3)}
+.omr:hover{border-color:var(--blue);color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.omr.filled{background:var(--blue);border-color:var(--blue);color:#fff;pointer-events:none}
+.omr.locked{pointer-events:none}
+.q.done.omr:not(.filled){opacity:.2;pointer-events:none}
+.opt-lbl{font-size:.88rem;color:var(--ink2)}
+
+ /* SCENARIO */
+.scenario{background:#f8fafc;border:1px solid var(--brd);border-radius:10px;padding:18px;margin-bottom:22px}
+.scenario-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--blue);display:inline-block}
+.scenario-desc{font-size:.9rem;color:var(--ink2);margin-bottom:12px;line-height:1.7}
+.scenario h4{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px}
+.scenario ul{list-style:none;margin-bottom:8px}
+.scenario li{font-size:.85rem;color:var(--ink2);padding:3px 0 3px 18px;position:relative;line-height:1.6}
+.scenario li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;background:var(--blue);border-radius:50%}
+
+.submit-sec{padding:28px;text-align:center;background:#f8fafc;border-top:1px solid var(--brd)}
+.submit-btn{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;border:none;padding:14px 50px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:8px;cursor:pointer;transition:.3s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+
+ /* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;justify-content:center;align-items:center;padding:20px}
+.modal-bg.active{display:flex}
+.modal-box{background:var(--paper);border-radius:14px;max-width:500px;width:100%;overflow:hidden;animation:su.3s ease}
+ @keyframes su{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.m-hdr{background:linear-gradient(135deg,#1e293b,#0f172a);padding:22px 25px;text-align:center}
+.m-hdr h2{color:#fff;font-size:1rem;font-weight:700;letter-spacing:2px}
+.m-body{padding:25px}
+
+ /* CONFIRM MODAL */
+.confirm-content{text-align:center}
+.confirm-icon{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem}
+.confirm-icon.warn{background:#fef3c7;color:#f59e0b}
+.confirm-icon.ok{background:#dcfce7;color:var(--green)}
+.confirm-content h3{font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px}
+.confirm-content p{font-size:.85rem;color:var(--ink2);margin-bottom:24px;line-height:1.6}
+.confirm-btns{display:flex;gap:10px}
+.c-btn{flex:1;padding:12px;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:.2s}
+.c-btn.agree{background:var(--green);color:#fff}
+.c-btn.agree:hover{background:#15803d}
+.c-btn.cancel{background:#e5e7eb;color:var(--ink)}
+.c-btn.cancel:hover{background:#d1d5db}
+.c-btn.view{background:var(--blue);color:#fff}
+.c-btn.view:hover{background:#1d4ed8}
+.c-btn.close{background:var(--red);color:#fff}
+.c-btn.close:hover{background:#b91c1c}
+
+ /* RESULTS */
+.r-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.r-box{background:#f8fafc;border:1px solid var(--brd);border-radius:10px;padding:16px 10px;text-align:center}
+.r-box.rl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ink3);margin-bottom:4px}
+.r-box.rv{font-size:1.7rem;font-weight:800}
+.r-box.green.rv{color:var(--green)}.r-box.red.rv{color:var(--red)}.r-box.orange.rv{color:var(--orange)}.r-box.blue.rv{color:var(--blue)}.r-box.purple.rv{color:var(--purple)}.r-box.dark.rv{color:var(--ink)}
+.r-box.big{grid-column:span 3}.r-box.big.rv{font-size:2rem}
+.m-foot{display:flex;gap:10px;padding:0 25px 25px}
+.mb{flex:1;padding:12px;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:.2s}
+.mb.pri{background:var(--blue);color:#fff}.mb.pri:hover{background:#1d4ed8}
+.mb.sec{background:var(--ink);color:#fff}.mb.sec:hover{opacity:.85}
+
+ /* REVIEW */
+.rev-bar{display:none;background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;text-align:center;padding:10px;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;position:sticky;top:0;z-index:1001}
+.rev-bar.active{display:block}
+.q.rc{background:linear-gradient(90deg,#f0fdf4,transparent 40%);border-left:3px solid var(--green);padding-left:10px}
+.q.rw{background:linear-gradient(90deg,#fef2f2,transparent 40%);border-left:3px solid var(--red);padding-left:10px}
+.q.rk{background:linear-gradient(90deg,#fff7ed,transparent 40%);border-left:3px solid var(--orange);padding-left:10px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.55rem;font-weight:700;letter-spacing:1px;margin-left:6px;vertical-align:middle}
+.badge.correct{background:#dcfce7;color:var(--green)}.badge.wrong{background:#fee2e2;color:var(--red)}.badge.skipped{background:#fff7ed;color:var(--orange)}
+.omr.rc-m{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
+.omr.rw-m{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
+
+ @media(max-width:768px){
+.start-card{border-radius:12px}.start-hdr{padding:30px 20px}.start-hdr h1{font-size:1.2rem}.start-body{padding:20px}
+.d-grid{grid-template-columns:1fr}.d-item.full{grid-column:span 1}
+.topbar{flex-wrap:wrap;gap:6px;padding:8px 10px}
+.paper-wrap{margin:12px auto}.section{padding:18px 14px}
+.opts{grid-template-columns:1fr;padding-left:10px}
+.paper-hdr{padding:14px}.r-grid{grid-template-columns:repeat(2,1fr)}.r-box.big{grid-column:span 2}
+.m-foot{flex-direction:column}.confirm-btns{flex-direction:column}
+ }
+ @media(max-width:400px){.start-hdr.badge{font-size:.5rem;padding:4px 10px}.start-hdr h1{font-size:1rem}.timer-box .time{font-size:.85rem}}
+ /* katex-spacing-fix */
+.katex{display:inline-block;margin:0 1px}.katex-display{display:block;margin:8px 0}
+.q-text,.opt-lbl,.scenario-desc{white-space:pre-wrap;word-spacing:normal}
+.katex{white-space:normal}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../../../katex/katex.min.css">
+</head>
+<body>
+
+<!-- START -->
+<div class="start-screen" id="startScr">
+ <div class="start-card">
+ <div class="start-hdr">
+ <div class="badge">Higher Education Commission</div>
+ <h1>Undergraduate Studies Admission Test</h1>
+ <p>Computer Science</p>
+ </div>
+ <div class="start-body">
+ <div class="d-grid">
+ <div class="d-item"><div class="lbl">Total MCQs</div><div class="val">75</div></div>
+ <div class="d-item"><div class="lbl">Time Allowed</div><div class="val">100 Minutes</div></div>
+ <div class="d-item full"><div class="lbl">Total Marks</div><div class="val">100</div></div>
+ <div class="d-item full" style="border-color:#16a34a;background:#f0fdf4;">
+ <div class="lbl" style="color:#16a34a;">Marking Policy</div>
+ <div class="val" style="color:#16a34a;font-size:.9rem;">? No Negative Marking</div>
+ </div>
+ </div>
+ <div class="inst-box">
+ <h3>Instructions</h3>
+ <ul>
+ <li>Click the circle (A, B, C, D) to select your answer</li>
+ <li>Once selected, the answer is locked and cannot be changed</li>
+ <li>You may skip questions and return later</li>
+ <li>No extra time will be provided beyond 100 minutes</li>
+ </ul>
+ </div>
+ <button class="start-btn" onclick="startExam()">Start Exam</button>
+ </div>
+ </div>
+</div>
+
+<!-- EXAM -->
+<div class="exam-screen" id="examScr">
+ <div class="topbar">
+ <div class="tb-left">
+ <span class="tb-logo">HEC USAT</span>
+ <span class="tb-badge">USAT-CS - Computer Science</span>
+ </div>
+ <div class="timer-box" id="timerBox">
+ <i class="fas fa-clock"></i>
+ <span class="time" id="timer">01:40:00</span>
+ </div>
+ </div>
+ <div class="prog-wrap">
+ <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+ <div class="prog-txt"><span><span id="ansC">0</span> / 75 answered</span><span id="ansP">0%</span></div>
+ </div>
+ <div class="paper-wrap">
+ <div class="paper">
+ <div class="paper-hdr">
+ <h1>HEC Undergraduate Studies Admission Test</h1>
+ <p>USAT-CS - Computer Science</p>
+ </div>
+ <div class="section" id="sE"><div class="sec-label">Part A: Verbal Reasoning (20 MCQs)</div><div id="eQ"></div></div>
+ <div class="section" id="sQ"><div class="sec-label">Part B: Quantitative Reasoning (25 MCQs)</div><div id="qQ"></div></div>
+ <div class="section" id="sA" style="display:none"><div class="sec-label"></div><div id="aQ"></div></div>
+ <div class="section" id="sS"><div class="sec-label">Part C: Subject Knowledge (30 MCQs)</div><div id="sQ2"></div></div>
+ <div class="submit-sec" id="subSec">
+  <!-- ESSAY SECTION -->
+  <div class="essay-section">
+    <div class="sec-label" style="color:var(--purple);border-color:var(--purple);background:linear-gradient(135deg,#faf5ff,#ede9fe)">Part II: Essay Writing (25 Marks — 40 Minutes)</div>
+    <div class="essay-note"><p>NOTE: Solve this section on paper, then check your answers with PrePora AI.</p></div>
+    <h3>A. Argument-Based Essay (15 Marks)</h3>
+    <p style="font-size:.8rem;color:var(--ink2);margin-bottom:12px">Choose ONE topic out of THREE. Write a well-structured argumentative essay (400–500 words).</p>
+    <div class="essay-topic"><p><strong>Topic 1:</strong> The death penalty deters crime. Argue for and against.</p></div>
+    <div class="essay-topic"><p><strong>Topic 2:</strong> Space exploration is a waste of resources when poverty exists. Discuss.</p></div>
+    <div class="essay-topic"><p><strong>Topic 3:</strong> Freedom of speech should have no limits. Argue critically.</p></div>
+    <h3 style="margin-top:16px">B. Narrative-Based Essay (10 Marks)</h3>
+    <p style="font-size:.8rem;color:var(--ink2);margin-bottom:12px">Choose ONE topic out of THREE. Write a concise narrative or reflective essay (200–300 words).</p>
+    <div class="essay-topic"><p><strong>Topic 1:</strong> Describe a place where you feel completely at peace.</p></div>
+    <div class="essay-topic"><p><strong>Topic 2:</strong> Narrate the story of someone who inspires you without them knowing it.</p></div>
+    <div class="essay-topic"><p><strong>Topic 3:</strong> Write about a childhood memory that still haunts you.</p></div>
+  </div>
+    <button class="submit-btn" onclick="showConfirm()">Submit Exam</button></div>
+ </div>
+ </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-bg" id="confirmModal">
+ <div class="modal-box">
+ <div class="m-body">
+ <div class="confirm-content" id="confirmContent"></div>
+ </div>
+ </div>
+</div>
+
+<!-- RESULTS MODAL -->
+<div class="modal-bg" id="resModal">
+ <div class="modal-box">
+ <div class="m-hdr"><h2>EXAM RESULTS</h2></div>
+ <div class="m-body">
+ <div class="r-grid">
+ <div class="r-box green"><div class="rl">Correct</div><div class="rv" id="rC">0</div></div>
+ <div class="r-box red"><div class="rl">Wrong</div><div class="rv" id="rW">0</div></div>
+ <div class="r-box orange"><div class="rl">Unattempted</div><div class="rv" id="rU">0</div></div>
+ <div class="r-box blue"><div class="rl">Obtained Marks</div><div class="rv" id="rM">0.0</div></div>
+ <div class="r-box dark"><div class="rl">Total Marks</div><div class="rv">100</div></div>
+ <div class="r-box purple"><div class="rl">Percentage</div><div class="rv" id="rP">0%</div></div>
+ <div class="r-box dark" style="grid-column:span 3"><div class="rl">Time Taken</div><div class="rv" id="rT" style="font-size:1.2rem">00:00:00</div></div>
+ </div>
+ </div>
+ <div class="m-foot">
+ <button class="mb pri" onclick="reviewPaper()">Review Paper</button>
+ <button class="mb sec" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+ </div>
+ </div>
+</div>
+
+<script>
+// ============ PAPER DATA ============
+const P=[
+{q:1,t:"AUDACITY : TIMIDITY :: ELOQUENCE : ?",o:["Inarticulacy","Fluency","Wit","Grace"],a:0,sub:"Analogy"},
+{q:2,t:"ANTHEM : NATION :: EMBLEM : ?",o:["Identity","Song","Pledge","Color"],a:0,sub:"Analogy"},
+{q:3,t:"BANE : BLESSING :: CURSE : ?",o:["Benediction","Affliction","Misery","Harm"],a:0,sub:"Analogy"},
+{q:4,t:"CIRCUMSPECT : RECKLESS :: METICULOUS : ?",o:["Careless","Careful","Precise","Thorough"],a:0,sub:"Analogy"},
+{q:5,t:"LACONIC : VERBOSE :: BRIEF : ?",o:["Long-winded","Short","Concise","Terse"],a:0,sub:"Analogy"},
+{q:6,t:"Choose the synonym of 'ambiguous'?",o:["unclear","vague","definite","erroneous"],a:0,sub:"Synonym/Antonym"},
+{q:7,t:"Choose the synonym of 'meticulous'?",o:["thorough","careful","careless","spurious"],a:0,sub:"Synonym/Antonym"},
+{q:8,t:"Choose the word most nearly OPPOSITE to ALTRUISTIC:",o:["Selfish","Generous","Charitable","Benevolent"],a:0,sub:"Synonym/Antonym"},
+{q:9,t:"Choose the word most nearly OPPOSITE to ELOQUENT:",o:["Inarticulate","Expressive","Fluent","Articulate"],a:0,sub:"Synonym/Antonym"},
+{q:10,t:"She was ___ when she received the good news.",o:["delighted","angry","confused","worried"],a:0,sub:"Sentence Completion"},
+{q:11,t:"The experiment was a ___ success.",o:[" resounding","partial","slight","minimal"],a:0,sub:"Sentence Completion"},
+{q:12,t:"The music was ___ and filled the entire auditorium.",o:["loud","soft","quiet","faint"],a:0,sub:"Sentence Completion"},
+{q:13,t:"The professor gave a ___ lecture on quantum physics.",o:["fascinating","boring","confusing","short"],a:0,sub:"Sentence Completion"},
+{q:14,t:"He was ___ to help his friends whenever they needed it.",o:["always","never","rarely","sometimes"],a:0,sub:"Sentence Completion"},
+{q:15,t:"He was ___ about his plans for the weekend.",o:["excited","anxious","worried","reluctant"],a:0,sub:"Sentence Completion"},
+{q:16,t:"What is cognitive dissonance?",o:["Physical exhaustion caused by hard labor","Mental discomfort arising from conflicting beliefs or behaviors","Memory loss associated with aging","Inability to focus on complex tasks"],a:1,sub:"Comprehension",passage:"Cognitive dissonance, a concept introduced by psychologist Leon Festinger in 1957, describes the mental discomfort experienced by an individual who holds two or more contradictory beliefs, ideas, or values. This discomfort is particularly acute when an individual's behavior conflicts with their core self-image. To alleviate dissonance, individuals rarely alter established behaviors; instead, they resort to cognitive rationalization, reinterpreting facts or dismissing new information that challenges their worldview. Confirmation bias—the tendency to search for, interpret, and recall information in a way that confirms pre-existing beliefs—serves as a primary mechanism for reducing dissonance. Understanding these psychological defenses is vital for public health communicators and educators seeking to convey evidence-based information to skeptical audiences."},
+{q:17,t:"How do people most commonly resolve cognitive dissonance according to the text?",o:["By immediately changing their behavior","Through cognitive rationalization and dismissing challenging facts","By seeking expert psychological counseling","By forgetting the conflict entirely"],a:1,sub:"Comprehension",passage:"Cognitive dissonance, a concept introduced by psychologist Leon Festinger in 1957, describes the mental discomfort experienced by an individual who holds two or more contradictory beliefs, ideas, or values. This discomfort is particularly acute when an individual's behavior conflicts with their core self-image. To alleviate dissonance, individuals rarely alter established behaviors; instead, they resort to cognitive rationalization, reinterpreting facts or dismissing new information that challenges their worldview. Confirmation bias—the tendency to search for, interpret, and recall information in a way that confirms pre-existing beliefs—serves as a primary mechanism for reducing dissonance. Understanding these psychological defenses is vital for public health communicators and educators seeking to convey evidence-based information to skeptical audiences."},
+{q:18,t:"Confirmation bias helps individuals by:",o:["Improving memory recall speed","Reducing dissonance by seeking information that supports existing views","Teaching them how to analyze arguments objectively","Encouraging debate with opposing thinkers"],a:1,sub:"Comprehension",passage:"Cognitive dissonance, a concept introduced by psychologist Leon Festinger in 1957, describes the mental discomfort experienced by an individual who holds two or more contradictory beliefs, ideas, or values. This discomfort is particularly acute when an individual's behavior conflicts with their core self-image. To alleviate dissonance, individuals rarely alter established behaviors; instead, they resort to cognitive rationalization, reinterpreting facts or dismissing new information that challenges their worldview. Confirmation bias—the tendency to search for, interpret, and recall information in a way that confirms pre-existing beliefs—serves as a primary mechanism for reducing dissonance. Understanding these psychological defenses is vital for public health communicators and educators seeking to convey evidence-based information to skeptical audiences."},
+{q:19,t:"The author implies that public health communicators should:",o:["Ignore psychological principles when designing campaigns","Account for cognitive dissonance and confirmation bias in their messaging","Assume all audiences will accept evidence-based data immediately","Use aggressive arguments to force compliance"],a:1,sub:"Comprehension",passage:"Cognitive dissonance, a concept introduced by psychologist Leon Festinger in 1957, describes the mental discomfort experienced by an individual who holds two or more contradictory beliefs, ideas, or values. This discomfort is particularly acute when an individual's behavior conflicts with their core self-image. To alleviate dissonance, individuals rarely alter established behaviors; instead, they resort to cognitive rationalization, reinterpreting facts or dismissing new information that challenges their worldview. Confirmation bias—the tendency to search for, interpret, and recall information in a way that confirms pre-existing beliefs—serves as a primary mechanism for reducing dissonance. Understanding these psychological defenses is vital for public health communicators and educators seeking to convey evidence-based information to skeptical audiences."},
+{q:20,t:"The word 'alleviate' in the text is closest in meaning to:",o:["Increase","Reduce or ease","Ignore","Measure"],a:1,sub:"Comprehension",passage:"Cognitive dissonance, a concept introduced by psychologist Leon Festinger in 1957, describes the mental discomfort experienced by an individual who holds two or more contradictory beliefs, ideas, or values. This discomfort is particularly acute when an individual's behavior conflicts with their core self-image. To alleviate dissonance, individuals rarely alter established behaviors; instead, they resort to cognitive rationalization, reinterpreting facts or dismissing new information that challenges their worldview. Confirmation bias—the tendency to search for, interpret, and recall information in a way that confirms pre-existing beliefs—serves as a primary mechanism for reducing dissonance. Understanding these psychological defenses is vital for public health communicators and educators seeking to convey evidence-based information to skeptical audiences."},
+{q:21,t:"SI on Rs. 5000 at 6% for 4 years?",o:["Rs. 1200","Rs. 1000","Rs. 1400","Rs. 800"],a:0,sub:"Arithmetic"},
+{q:22,t:"Two numbers are 30% and 40% more than third. First is what percent of second?",o:["\\(\\frac{150}{14}\\)%","107 \\(\\frac{1}{7}\\)%","92 \\(\\frac{6}{7}\\)%","87 \\(\\frac{1}{2}\\)%"],a:2,sub:"Arithmetic"},
+{q:23,t:"CP of 10 articles = SP of 8 articles. Loss?",o:["20%","25%","15%","10%"],a:0,sub:"Arithmetic"},
+{q:24,t:"CP Rs. 300, sell at 15% loss. SP?",o:["Rs. 255","Rs. 260","Rs. 270","Rs. 245"],a:0,sub:"Arithmetic"},
+{q:25,t:"Sell at 15% profit. If Rs. 105 more, gain 25%. CP?",o:["Rs. 1050","Rs. 1000","Rs. 950","Rs. 1100"],a:0,sub:"Arithmetic"},
+{q:26,t:"CP of 25 articles = SP of 20 articles. Profit?",o:["25%","20%","30%","15%"],a:0,sub:"Arithmetic"},
+{q:27,t:"\\(\\frac{3x+2y}{3x-2y}\\) = \\(\\frac{5}{3}\\). x:y?",o:["\\(5\\colon 3\\)","\\(3\\colon 5\\)","\\(1\\colon 1\\)","\\(2\\colon 3\\)"],a:1,sub:"Algebra & Functions"},
+{q:28,t:"SD of x is 4. SD of (2x-3)?",o:["4","8","5","6"],a:1,sub:"Algebra & Functions"},
+{q:29,t:"Equation with roots 2 and 3?",o:["\\(x^{2}\\)-5x+6=0","\\(x^{2}\\)+5x+6=0","\\(x^{2}\\)-5x-6=0","\\(x^{2}\\)+5x-6=0"],a:0,sub:"Algebra & Functions"},
+{q:30,t:"Derivative \\(e^{2x}\\)?",o:["\\(2e^{2x}\\)","\\(e^{2x}\\)","\\(2xe^{2x}\\)","\\(e^{x}\\)"],a:0,sub:"Algebra & Functions"},
+{q:31,t:"Volume ratio of cubes \\(27\\colon 64\\). Edge ratio?",o:["\\(3\\colon 4\\)","\\(4\\colon 3\\)","\\(9\\colon 16\\)","\\(27\\colon 64\\)"],a:0,sub:"Geometry"},
+{q:32,t:"Sides ratio \\(3\\colon 4\\):5, perimeter 36 cm. Longest side?",o:["15 cm","18 cm","12 cm","20 cm"],a:0,sub:"Geometry"},
+{q:33,t:"Square diagonal ratio \\(3\\colon 4\\). Area ratio?",o:["\\(3\\colon 4\\)","\\(4\\colon 3\\)","\\(9\\colon 16\\)","\\(16\\colon 9\\)"],a:2,sub:"Geometry"},
+{q:34,t:"AM=10, GM=8. Numbers?",o:["16 and 4","14 and 6","12 and 8","18 and 2"],a:0,sub:"Equations"},
+{q:35,t:"\\(f(x)=(x-1)/(x+1). f(f(x))\\)?",o:["x","1/x","-x","-1/x"],a:0,sub:"Equations"},
+{q:36,t:"\\(x^{2}\\)-kx+16=0 equal roots. k=?",o:["8","-8","+/- 8","+/- 4"],a:2,sub:"Equations"},
+{q:37,t:"Variance 25. CV=?",o:["(5/Mean)x100","(25/Mean)x100","(Mean/5)x100","(Mean/25)x100"],a:0,sub:"Statistics"},
+{q:38,t:"Mean proportional between 4 and 25?",o:["10","8","12","15"],a:0,sub:"Statistics"},
+{q:39,t:"Means 20,30,40 sizes 10,20,30. Combined mean?",o:["33.33","30","35","40"],a:0,sub:"Statistics"},
+{q:40,t:"Income ratio \\(5\\colon 3\\), expenditure ratio \\(9\\colon 5\\). A saves 1300, B saves 900. A's income?",o:["Rs. 10000","Rs. 8000","Rs. 12000","Rs. 6000"],a:0,sub:"Scenario-Based/Mental Math"},
+{q:41,t:"Train 180 m, speed 54 km/h. Cross pole in?",o:["10 seconds","12 seconds","8 seconds","15 seconds"],a:1,sub:"Scenario-Based/Mental Math"},
+{q:42,t:"Population increases 5% annually from 20000. After 2 years?",o:["22050","21000","22000","22500"],a:0,sub:"Scenario-Based/Mental Math"},
+{q:43,t:"Train 120 m crosses pole 6 seconds. Speed km/h?",o:["72 km/h","60 km/h","80 km/h","90 km/h"],a:0,sub:"Scenario-Based/Mental Math"},
+{q:44,t:"Pipes A fill 3h, B fill 4h, C empty 6h. All open. Time?",o:["\\(\\frac{12}{5}\\) hours","2 hours","3 hours","4 hours"],a:0,sub:"Scenario-Based/Mental Math"},
+{q:45,t:"Monthly income Rs. 30000. Spends 40% food, 20% rent. Savings?",o:["Rs. 9000","Rs. 12000","Rs. 6000","Rs. 10000"],a:0,sub:"Scenario-Based/Mental Math"},
+{q:46,t:"What is the SI unit of force?",o:["Watt","Newton","Joule","Pascal"],a:1,sub:"Physics"},
+{q:47,t:"Speed of light in vacuum is approximately:",o:["3×10⁶ m/s","3×10⁷ m/s","3×10⁸ m/s","3×10⁹ m/s"],a:2,sub:"Physics"},
+{q:48,t:"Which particle has positive charge?",o:["Electron","Neutron","Proton","Photon"],a:2,sub:"Physics"},
+{q:49,t:"Energy is measured in:",o:["Newton","Joule","Watt","Pascal"],a:1,sub:"Physics"},
+{q:50,t:"Which law states F=ma?",o:["Newton's 1st","Newton's 2nd","Newton's 3rd","Kepler's"],a:1,sub:"Physics"},
+{q:51,t:"Ohm's law states:",o:["V=IR","V=I/R","V=I²R","V=IR²"],a:0,sub:"Physics"},
+{q:52,t:"The unit of electric current is:",o:["Volt","Ohm","Ampere","Watt"],a:2,sub:"Physics"},
+{q:53,t:"What is the acceleration due to gravity?",o:["8.9 m/s²","9.8 m/s²","10.8 m/s²","11.8 m/s²"],a:1,sub:"Physics"},
+{q:54,t:"What does CPU stand for?",o:["Central Process Unit","Central Processing Unit","Computer Personal Unit","Central Program Utility"],a:1,sub:"Computer Science"},
+{q:55,t:"RAM stands for:",o:["Random Access Memory","Read Access Memory","Random Active Memory","Read Active Memory"],a:0,sub:"Computer Science"},
+{q:56,t:"SQL stands for:",o:["Structured Query Language","Simple Query Language","Standard Query Language","System Query Language"],a:0,sub:"Computer Science"},
+{q:57,t:"1 KB equals:",o:["1000 bytes","1024 bytes","512 bytes","2048 bytes"],a:1,sub:"Computer Science"},
+{q:58,t:"HTML stands for:",o:["Hyper Text Markup Language","High Tech Modern Language","Hyper Transfer Markup Language","Home Tool Markup Language"],a:0,sub:"Computer Science"},
+{q:59,t:"Which is a frontend language?",o:["Python","Java","JavaScript","PHP"],a:2,sub:"Computer Science"},
+{q:60,t:"IP address stands for:",o:["Internet Protocol","Internal Process","Input Program","Integrated Platform"],a:0,sub:"Computer Science"},
+{q:61,t:"Which is not a programming language?",o:["Python","Java","HTML","C++"],a:2,sub:"Computer Science"},
+{q:62,t:"Which is the brain of the computer?",o:["RAM","Hard Disk","CPU","GPU"],a:2,sub:"Computer Science"},
+{q:63,t:"Which company developed Windows?",o:["Apple","Google","Microsoft","IBM"],a:2,sub:"Computer Science"},
+{q:64,t:"Which of these is an operating system?",o:["MS Word","Linux","Photoshop","Excel"],a:1,sub:"Computer Science"},
+{q:65,t:"Which language is known as the mother of all languages?",o:["Java","C","Python","Assembly"],a:1,sub:"Computer Science"},
+{q:66,t:"Binary number system has base:",o:["2","8","10","16"],a:0,sub:"Computer Science"},
+{q:67,t:"Who is known as the father of computers?",o:["Alan Turing","Charles Babbage","John von Neumann","Ada Lovelace"],a:1,sub:"Computer Science"},
+{q:68,t:"∫2x dx equals:",o:["x²+C","2x²+C","x+C","2+C"],a:0,sub:"Mathematics"},
+{q:69,t:"The value of i² (where i=√-1) is:",o:["1","-1","i","-i"],a:1,sub:"Mathematics"},
+{q:70,t:"What is the derivative of x²?",o:["x","2x","x²","2x²"],a:1,sub:"Mathematics"},
+{q:71,t:"What is the formula for nCr?",o:["n!/(r!(n-r)!)","n!/r!","n!/n!","r!/(n!(n-r)!)"],a:0,sub:"Mathematics"},
+{q:72,t:"What is the sum of first 10 natural numbers?",o:["45","50","55","60"],a:2,sub:"Mathematics"},
+{q:73,t:"If log₂x=3, then x=",o:["6","8","10","12"],a:1,sub:"Mathematics"},
+{q:74,t:"If \\(f(x)=3x+2\\), what is \\(f(4)\\)?",o:["12","14","16","18"],a:1,sub:"Mathematics"},
+{q:75,t:"Value of \\(sin 90°\\) is:",o:["0","1","-1","∞"],a:1,sub:"Mathematics"}
+];
+
+let T=7200,iv,done=false,ans={},examStarted=false,MK=1.1,startTime=0;
+
+function startExam(){examStarted=true;startTime=Date.now();document.getElementById('startScr').style.display='none';document.getElementById('examScr').style.display='block';render();tick();}
+
+function render(){
+ const c={e:document.getElementById("eQ"),q:document.getElementById("qQ"),s:document.getElementById("sQ2")};
+ const subLabels={};
+ P.forEach(d=>{
+ const sec=d.q<=20?"e":d.q<=45?"q":"s";
+ let h="";
+ if(d.s){
+  let constraints="";d.c.forEach(v=>{constraints+=`<li>${v}</li>`;});
+  h=`<div class="scenario"><div class="scenario-title">Scenario: ${d.s} (Q${d.q} - Q${Math.min(d.q+4,75)})</div><div class="scenario-desc">${d.desc}</div><h4>Constraints:</h4><ul>${constraints}</ul></div><div class="q" id="q${d.q}"><div class="q-text"><span class="q-num">Q${d.q}.</span> ${d.t}</div><div class="opts">${d.o.map((v,i)=>`<div class="opt"><div class="omr" id="c${d.q}-${i}" onclick="pick(${d.q},${i})">${String.fromCharCode(65+i)}</div><span class="opt-lbl">${v}</span></div>`).join("")}</div></div>`;
+ } else {
+  if(sec==="s" && d.sub && subLabels[sec]!==d.sub){
+   subLabels[sec]=d.sub;
+   h+=`<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#93c5fd;margin:20px 0 10px;padding:8px 14px;background:rgba(37,99,235,.12);border-left:3px solid #3b82f6;border-radius:0 6px 6px 0">${d.sub}</div>`;
+  }
+  h+=`<div class="q" id="q${d.q}"><div class="q-text"><span class="q-num">Q${d.q}.</span> ${d.t}</div><div class="opts">${d.o.map((v,i)=>`<div class="opt"><div class="omr" id="c${d.q}-${i}" onclick="pick(${d.q},${i})">${String.fromCharCode(65+i)}</div><span class="opt-lbl">${v}</span></div>`).join("")}</div></div>`;
+ }
+ c[sec].innerHTML+=h;
+ });
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+}
+
+function pick(q,i){
+ if(done)return;const el=document.getElementById('q'+q);if(el.classList.contains('done'))return;
+ document.getElementById('c'+q+'-'+i).classList.add('filled');
+ P.find(x=>x.q===q).o.forEach((_,j)=>document.getElementById('c'+q+'-'+j).classList.add('locked'));
+ el.classList.add('done');ans[q]=i;upd();
+}
+
+function tick(){
+ iv=setInterval(()=>{
+ T--;const h=Math.floor(T/3600),m=Math.floor((T%3600)/60),s=T%60;
+ document.getElementById('timer').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+ const tb=document.getElementById('timerBox');
+ if(T<=300)tb.className='timer-box dng';else if(T<=600)tb.className='timer-box warn';
+ if(T<=0){clearInterval(iv);autoSubmit();}
+ },1000);
+}
+
+function upd(){const n=Object.keys(ans).length;document.getElementById('ansC').textContent=n;document.getElementById('ansP').textContent=Math.round(n/75*100)+'%';document.getElementById('progFill').style.width=n/75*100+'%';}
+
+function showConfirm(){
+ const n=Object.keys(ans).length;
+ document.getElementById('confirmContent').innerHTML=`
+ <div class="confirm-icon warn"><i class="fas fa-exclamation-triangle"></i></div>
+ <h3>Submit Exam?</h3>
+ <p>You have answered <strong>${n}/75</strong> questions. ${n<75?`${75-n} questions are unattempted.`:''} Once submitted, you cannot change your answers.</p>
+ <div class="confirm-btns">
+ <button class="c-btn cancel" onclick="closeModal('confirmModal')">Cancel</button>
+ <button class="c-btn agree" onclick="doSubmit()"><i class="fas fa-check"></i> Agree & Submit</button>
+ </div>`;
+ document.getElementById('confirmModal').classList.add('active');
+}
+
+function autoSubmit(){
+ const n=Object.keys(ans).length;
+ document.getElementById('confirmContent').innerHTML=`
+ <div class="confirm-icon warn"><i class="fas fa-clock"></i></div>
+ <h3>Time's Up!</h3>
+ <p>The exam time has ended. Your answers (${n}/75) have been submitted automatically.</p>
+ <div class="confirm-btns">
+ <button class="c-btn view" onclick="closeModal('confirmModal');showResults()"><i class="fas fa-chart-bar"></i> View Results</button>
+ </div>`;
+ document.getElementById('confirmModal').classList.add('active');
+}
+
+function doSubmit(){
+ done=true;clearInterval(iv);closeModal('confirmModal');
+ document.getElementById('confirmContent').innerHTML=`
+ <div class="confirm-icon ok"><i class="fas fa-check-circle"></i></div>
+ <h3>Test Submitted Successfully!</h3>
+ <p>Your responses have been recorded. Click below to view your results.</p>
+ <div class="confirm-btns">
+ <button class="c-btn view" onclick="closeModal('confirmModal');showResults()"><i class="fas fa-chart-bar"></i> View Results</button>
+ </div>`;
+ document.getElementById('confirmModal').classList.add('active');
+}
+
+function showResults(){
+ let c=0,w=0,u=0;
+ P.forEach(d=>{if(ans[d.q]===undefined)u++;else if(ans[d.q]===d.a)c++;else w++;});
+ const mk=(c*MK).toFixed(1),pct=(mk/100*100).toFixed(1);
+ const elapsed=Math.floor((Date.now()-startTime)/1000);
+ const eh=String(Math.floor(elapsed/3600)).padStart(2,'0');
+ const em=String(Math.floor((elapsed%3600)/60)).padStart(2,'0');
+ const es=String(elapsed%60).padStart(2,'0');
+ document.getElementById('rC').textContent=c;document.getElementById('rW').textContent=w;document.getElementById('rU').textContent=u;
+ document.getElementById('rM').textContent=mk;document.getElementById('rP').textContent=pct+'%';
+ document.getElementById('rT').textContent=eh+':'+em+':'+es;
+ document.getElementById('resModal').classList.add('active');
+}
+
+function reviewPaper(){
+ closeModal('resModal');
+ document.getElementById('subSec').innerHTML=`<button class="submit-btn" onclick="backToResults()" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">Back to Results</button>`;
+ P.forEach(d=>{
+ if(!d.s){
+ const el=document.getElementById('q'+d.q);if(!el)return;
+ const ua=ans[d.q],ca=d.a;el.classList.remove('done');
+ let st='skipped';if(ua!==undefined)st=ua===ca?'correct':'wrong';
+ el.classList.add('r'+st.charAt(0));
+ el.querySelector('.q-num').innerHTML=`Q${d.q}. <span class="badge ${st}">${st.toUpperCase()}</span>`;
+ d.o.forEach((_,i)=>{const ci=document.getElementById('c'+d.q+'-'+i);ci.classList.remove('filled','locked');if(i===ca)ci.classList.add('rc-m');else if(i===ua&&ua!==ca)ci.classList.add('rw-m');});
+ }
+ });
+ 
+ window.scrollTo(0,0);
+}
+
+function backToResults(){
+ document.getElementById('subSec').innerHTML=`<button class="submit-btn" onclick="showConfirm()">Submit Exam</button>`;
+ P.forEach(d=>{
+ if(!d.s){
+ const el=document.getElementById('q'+d.q);if(!el)return;
+ el.classList.remove('rc','rw','rk');
+ const ua=ans[d.q],ca=d.a;
+ if(ua!==undefined){el.classList.add('done');el.querySelector('.q-num').innerHTML=`Q${d.q}.`;d.o.forEach((_,i)=>{const ci=document.getElementById('c'+d.q+'-'+i);ci.classList.remove('rc-m','rw-m');if(i===ua)ci.classList.add('filled');});}
+ else{el.querySelector('.q-num').innerHTML=`Q${d.q}.`;d.o.forEach((_,i)=>{const ci=document.getElementById('c'+d.q+'-'+i);ci.classList.remove('rc-m','rw-m');});}
+ }
+ });
+ showResults();
+}
+
+function goBack(){
+ closeModal('resModal');
+ document.getElementById('confirmContent').innerHTML=`
+ <div class="confirm-icon warn"><i class="fas fa-arrow-left"></i></div>
+ <h3>Close Test?</h3>
+ <p>You are about to go back. The test will be closed and all your progress will be lost. Are you sure?</p>
+ <div class="confirm-btns">
+ <button class="c-btn cancel" onclick="closeModal('confirmModal')">Cancel</button>
+ <button class="c-btn agree" onclick="doCloseTest()"><i class="fas fa-check"></i> Agree & Close</button>
+ </div>`;
+ document.getElementById('confirmModal').classList.add('active');
+}
+
+function doCloseTest(){
+ window.onbeforeunload=null;
+ window.removeEventListener('popstate',popstateHandler);
+ window.onpopstate=null;
+ try{window.close();}catch(e){}
+ document.body.innerHTML='<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:Inter,sans-serif;background:#0f0f1a;color:#fff;text-align:center;padding:20px"><div><h1 style="font-size:1.5rem;margin-bottom:10px">Test Closed</h1><p style="color:#64748b">You can close this tab now.</p></div></div>';
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('active');}
+
+// Browser back navigation handling
+var popstateHandler=function(){
+ if(!examStarted)return;
+ document.getElementById('confirmContent').innerHTML=`
+ <div class="confirm-icon warn"><i class="fas fa-exclamation-triangle"></i></div>
+ <h3>Leave Test?</h3>
+ <p>If you go back now, your test will be closed and all progress may be lost. Are you sure?</p>
+ <div class="confirm-btns">
+ <button class="c-btn cancel" onclick="closeModal('confirmModal')">Stay on Test</button>
+ <button class="c-btn close" onclick="doCloseTest()"><i class="fas fa-times"></i> Agree & Close</button>
+ </div>`;
+ document.getElementById('confirmModal').classList.add('active');
+ history.pushState(null,null,location.href);
+};
+window.addEventListener('load',function(){
+ history.pushState(null,null,location.href);
+ window.addEventListener('popstate',popstateHandler);
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="../../../../katex/katex.min.js"></script>
+<script src="../../../../katex/auto-render.min.js"></script>
+<script>
+// Math renderer v16.0 — Universal KaTeX math parser & multi-part equation isolator
+var renderMathNow=(function(){
+var STASH=[];
+var OBS=null;
+
+function renderKaTeX(text){
+  if(typeof katex==='undefined') return null;
+  try{
+    var html=katex.renderToString(text,{throwOnError:false,displayMode:false,output:'html',trust:true});
+    if(html&&html.indexOf('katex-error')>-1) return null;
+    return html;
+  }catch(e){ return null; }
+}
+
+function textToLatex(s){
+  var r=s;
+  STASH=[];
+  r=r.replace(/\\(frac\{[^}]+\}\{[^}]+\}|sqrt\{[^}]+\})/g,function(m){STASH.push(m);return '\x00S'+(STASH.length-1)+'\x00';});
+  
+  // Big-O notation e.g. O(n^2), O(d*(n+b))
+  r=r.replace(/\bO\(([^)]+)\)/g,function(m,inner){
+    return 'O(' + textToLatex(inner) + ')';
+  });
+
+  r=r.replace(/\blog\s+base\s+(\d+)\s+of\s+(\d+)/g,'\\log_{$1}($2)');
+  var fn=['arcsin','arccos','arctan','sin','cos','tan','sec','csc','cot','log','ln','lim','max','min','exp'];
+  for(var i=0;i<fn.length;i++){
+    var f=fn[i];
+    r=r.replace(new RegExp(f+'\\^\\(([^)]+)\\)','g'),'\\'+f+'^{$1}');
+    r=r.replace(new RegExp(f+'\\^(\\d+)','g'),'\\'+f+'^{$1}');
+    r=r.replace(new RegExp(f+'\\s*\\(','g'),'\\'+f+'(');
+  }
+
+  r=r.replace(/[Ii]ntegral\s*from\s*(\d+)\s*to\s*(\d+)/g,'\\int_{$1}^{$2}');
+  r=r.replace(/from\s*(\d+)\s*to\s*(\d+)/g,'_{$1}^{$2}');
+  r=r.replace(/[Ii]ntegral\s+(\S)/g,'\\int $1');
+  r=r.replace(/[Ii]ntegral/g,'\\int');
+  r=r.replace(/\bdeg\b/g,'^{\\circ}');
+  r=r.replace(/\bdegrees?\b/g,'^{\\circ}');
+  r=r.replace(/\+\/-/g,'\\pm');
+
+  // Greek symbols
+  r=r.replace(/\bpi\b/g,'\\pi');
+  r=r.replace(/\balpha\b/g,'\\alpha');
+  r=r.replace(/\bbeta\b/g,'\\beta');
+  r=r.replace(/\bgamma\b/g,'\\gamma');
+  r=r.replace(/\bdelta\b/g,'\\delta');
+  r=r.replace(/\btheta\b/g,'\\theta');
+  r=r.replace(/\bsigma\b/g,'\\sigma');
+  r=r.replace(/\bomega\b/g,'\\omega');
+  r=r.replace(/\blambda\b/g,'\\lambda');
+  r=r.replace(/\bmu\b/g,'\\mu');
+  r=r.replace(/\bphi\b/g,'\\phi');
+  r=r.replace(/\bpsi\b/g,'\\psi');
+  r=r.replace(/\bepsilon\b/g,'\\epsilon');
+  r=r.replace(/\binfty\b/g,'\\infty');
+
+  // Powers with negative signs or expressions: 7^-1, x^-2, x^2, y^3, (a+b)^2
+  r=r.replace(/([a-zA-Z0-9)])\^\((-?\w+)\)/g,'$1^{$2}');
+  r=r.replace(/([a-zA-Z0-9)])\^(-?\d+|\w+)/g,'$1^{$2}');
+
+  // Multiplication operator: d*(n+b), a*b
+  r=r.replace(/([a-zA-Z0-9)])\s*\*\s*([a-zA-Z0-9(])/g,'$1 \\cdot $2');
+
+  // Fractions
+  r=r.replace(/\(([^()]+)\)\s*\/\s*\(([^()]+)\)/g,'\\\\frac{$1}{$2}');
+  r=r.replace(/(\d+)\s*\/\s*\(([^()]+)\)/g,'\\\\frac{$1}{$2}');
+  r=r.replace(/\(([^()]+)\)\s*\/\s*(\d+)/g,'\\\\frac{$1}{$2}');
+  r=r.replace(/(\d+)\s*\/\s*(\d+)/g,'\\\\frac{$1}{$2}');
+
+  for(var i=0;i<STASH.length;i++){r=r.replace('\x00S'+i+'\x00',STASH[i]);}
+  r=r.replace(/\\\\/g,'\\');
+  return r;
+}
+
+function processTN(tn){
+  if(!tn||!tn.nodeValue) return;
+  var t=tn.nodeValue;
+  if(!t||!t.trim()) return;
+  if(!tn.parentNode) return;
+  if(tn.parentNode.classList&&tn.parentNode.classList.contains('katex')) return;
+  if(tn.parentNode.getAttribute&&tn.parentNode.getAttribute('data-mr')) return;
+
+  var rendered=null;
+
+  // 1. Explicit delimiters \( ... \) or $ ... $
+  if(/\\{1,2}\(|(?:\$[^$]+\$)/.test(t)){
+    var latex=t.replace(/\\{1,2}\((.*?)\\{1,2}\)/g,function(m,expr){
+      var ltx=textToLatex(expr);
+      var rhtml=renderKaTeX(ltx);
+      return rhtml||m;
+    }).replace(/\$([^$]+)\$/g,function(m,expr){
+      var ltx=textToLatex(expr);
+      var rhtml=renderKaTeX(ltx);
+      return rhtml||m;
+    });
+    if(latex!==t) rendered=latex;
+  }
+
+  // 2. Inline pattern isolation (detect multi-expression equations)
+  if(!rendered){
+    var inlineT=t;
+    // Equations like x+y=7, xy=12. x^3 + y^3?
+    inlineT=inlineT.replace(/([a-zA-Z0-9_]+\s*=\s*[-+\w()\/\^\s,]+(?:\.\s*[a-zA-Z0-9_^\+\-\s\/\*]+\??)?)/g,function(m){
+      if(m.length < 3 || /^\d+\.$/.test(m.trim())) return m;
+      return '\\('+m.trim()+'\\)';
+    });
+    inlineT=inlineT.replace(/(\b[a-zA-Z0-9_]+\s*\^[-+\w()]+(?:\s*[-+*=]\s*[a-zA-Z0-9_^()\/\+\-]+)*)/g,function(m){ return '\\('+m+'\\)'; });
+    inlineT=inlineT.replace(/(\\[a-zA-Z]+\s*\([^)]*\)(?:\s*=\s*\?)?)/g,function(m){ return '\\('+m+'\\)'; });
+    inlineT=inlineT.replace(/(\bO\([^)]+\))/g,function(m){ return '\\('+m+'\\)'; });
+    inlineT=inlineT.replace(/(\b\d+\s*\/\s*\d+\b)/g,function(m){ return '\\('+m+'\\)'; });
+
+    if(inlineT!==t){
+      var latex=inlineT.replace(/\\{1,2}\((.*?)\\{1,2}\)/g,function(m,expr){
+        var ltx=textToLatex(expr);
+        var rhtml=renderKaTeX(ltx);
+        return rhtml||m;
+      });
+      if(latex!==inlineT) rendered=latex;
+    }
+  }
+
+  // 3. Fallback for pure math strings
+  if(!rendered && /^[\d\s+\-*\/=^()a-zA-Z_\\{}.,]+$/.test(t) && /[\^=\/\\*]/.test(t) && !/[a-zA-Z]{4,}/.test(t)){
+    var latex=textToLatex(t);
+    var rhtml=renderKaTeX(latex);
+    if(rhtml) rendered=rhtml;
+  }
+
+  if(!rendered) return;
+  var span=document.createElement('span');
+  span.setAttribute('data-mr','1');
+  span.innerHTML=rendered;
+  tn.parentNode.replaceChild(span,tn);
+}
+
+function processAll(root){
+  if(!root) root=document.body;
+  if(!root||!root.childNodes) return;
+  var nodes=[root];
+  while(nodes.length){
+    var el=nodes.pop();
+    if(!el||!el.childNodes) continue;
+    for(var i=0;i<el.childNodes.length;i++){
+      var c=el.childNodes[i];
+      if(c.nodeType===3){ processTN(c); }
+      else if(c.nodeType===1){
+        if(c.tagName==='SCRIPT'||c.tagName==='STYLE'||c.tagName==='CANVAS') continue;
+        if(c.classList&&c.classList.contains('katex')) continue;
+        if(c.getAttribute&&c.getAttribute('data-mr')) continue;
+        nodes.push(c);
+      }
+    }
+  }
+}
+
+function renderAll(){
+  try{ processAll(document.body); }catch(e){ console.error('MathRenderer error:',e); }
+}
+
+OBS=new MutationObserver(function(mutations){
+  for(var i=0;i<mutations.length;i++){
+    var added=mutations[i].addedNodes;
+    for(var j=0;j<added.length;j++){
+      var n=added[j];
+      if(n.nodeType===3) processTN(n);
+      else if(n.nodeType===1&&n.tagName!=='SCRIPT'&&n.tagName!=='STYLE'){
+        if(n.classList&&n.classList.contains('katex')) continue;
+        if(n.getAttribute&&n.getAttribute('data-mr')) continue;
+        processAll(n);
+      }
+    }
+  }
+});
+
+function startObs(){ if(OBS) OBS.observe(document.body,{childList:true,subtree:true}); }
+function stopObs(){ if(OBS) OBS.disconnect(); }
+
+renderAll.disconnect=stopObs;
+renderAll.reconnect=startObs;
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',function(){ renderAll(); startObs(); });
+}else{
+  renderAll();
+  startObs();
+}
+
+return renderAll;
+})();
+
+</script>
+</body>
+</html>
